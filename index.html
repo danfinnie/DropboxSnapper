@@ -5,13 +5,16 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title>Dropbox Facebook</title>
         <link rel="stylesheet" href="style.css">
-        <script src="script.js"></script>
     </head>
     <body>
         <!-- Add your site or application content here -->
-        <p>Hello world! This is HTML5 Boilerplate.</p>
+        <p>This is a dropbox chooser:</p>
 
+        <input id="dropbox-chooser" type="dropbox-chooser" name="selected-file" data-link-type="direct" data-multiselect="true" style="visibility: hidden;"/>
+
+        <script src="https://www.dropbox.com/static/api/1/dropins.js" id="dropboxjs" data-app-key="xyhauk709xz7gys"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+        <script src="script.js"></script>
     </body>
 </html>

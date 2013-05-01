@@ -18,19 +18,6 @@ $.fn.afterAll = function() {
 };
 
 (function(events) {
-    $.each(["imagesSelected",
-        "facebook:login:connected",
-        "facebook:login:not_authorized",
-        "facebook:login:not_logged_in"],
-        function(i, customEvent) {
-            events.on(customEvent, function() {
-                extraParams = Array.prototype.slice.call(arguments, 1);
-                console.log("event: " + customEvent + ", extraParams: " + extraParams);
-                console.log(extraParams);
-            });
-        }
-    );
-
     $(function() {
         $("#dropbox-chooser").on("DbxChooserSuccess", function(ev) {
             links = $.map(ev.originalEvent.files, function(a) { return a.link; });
@@ -41,7 +28,6 @@ $.fn.afterAll = function() {
     events.afterAll("facebook:login:connected imagesSelected", function(ev) {
         var albumName = "Dropbox Snapper " + parseInt(Math.random()*500);
         FB.api("/me/albums", "post", { name: albumName }, function(response) {
-            console.log(response);
             var albumId = response.id;
             var batchRequest = $.map(ev.imagesSelected[1], function(imageUrl) {
                 return {
@@ -50,9 +36,7 @@ $.fn.afterAll = function() {
                     body: "url=" + encodeURIComponent(imageUrl)
                 };
             });
-            FB.api("/", "post", { batch: batchRequest }, function(response) {
-                console.log(response);
-            });
+            FB.api("/", "post", { batch: batchRequest });
         });
     });
 

@@ -39,7 +39,21 @@ $.fn.afterAll = function() {
     });
 
     events.afterAll("facebook:login:connected imagesSelected", function(ev) {
-        console.log(ev.imagesSelected[1]);
+        var albumName = "Dropbox Snapper " + parseInt(Math.random()*500);
+        FB.api("/me/albums", "post", { name: albumName }, function(response) {
+            console.log(response);
+            var albumId = response.id;
+            var batchRequest = $.map(ev.imagesSelected[1], function(imageUrl) {
+                return {
+                    method: "POST",
+                    relative_url: albumId + "/photos",
+                    body: "url=" + encodeURIComponent(imageUrl)
+                };
+            });
+            FB.api("/", "post", { batch: batchRequest }, function(response) {
+                console.log(response);
+            });
+        });
     });
 
     window.fbAsyncInit = function() {

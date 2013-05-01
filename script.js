@@ -1,23 +1,22 @@
 (function(events) {
-    $(function() {
-        $.each(["imagesSelected",
-            "facebook:login:connected",
-            "facebook:login:not_authorized",
-            "facebook:login:not_logged_in"],
-            function(i, customEvent) {
-                events.on(customEvent, function() {
-                    extraParams = Array.prototype.slice.call(arguments, 1);
-                    console.log("event: " + customEvent + ", extraParams: " + extraParams);
-                    console.log(extraParams);
-                });
-            }
-        );
+    $.each(["imagesSelected",
+        "facebook:login:connected",
+        "facebook:login:not_authorized",
+        "facebook:login:not_logged_in"],
+        function(i, customEvent) {
+            events.on(customEvent, function() {
+                extraParams = Array.prototype.slice.call(arguments, 1);
+                console.log("event: " + customEvent + ", extraParams: " + extraParams);
+                console.log(extraParams);
+            });
+        }
+    );
 
+    $(function() {
         $("#dropbox-chooser").on("DbxChooserSuccess", function(ev) {
             links = $.map(ev.originalEvent.files, function(a) { return a.link; });
             events.trigger("imagesSelected", [links]);
         });
-
     });
 
     window.fbAsyncInit = function() {

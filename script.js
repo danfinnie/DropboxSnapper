@@ -1,14 +1,16 @@
 $.fn.afterAll = function() {
     var args = arguments;
     var numCallbacks = arguments[0].match(/ /g).length+1;
+    var extraParams = {};
     return this.each(function() {
         var numCallbacksTriggered = 0;
         var localArgs = Array.prototype.slice.call(args, 0);
         var callback = localArgs.splice(-1)[0];
-        localArgs.push(function() {
+        localArgs.push(function(ev) {
             numCallbacksTriggered++;
+            extraParams[ev.type] = arguments;
             if (numCallbacksTriggered == numCallbacks)
-                callback.apply(this, arguments);
+                callback.call(this, extraParams);
         });
         $this = $(this);
         $this.on.apply($this, localArgs);
@@ -34,6 +36,10 @@ $.fn.afterAll = function() {
             links = $.map(ev.originalEvent.files, function(a) { return a.link; });
             events.trigger("imagesSelected", [links]);
         });
+    });
+
+    events.afterAll("facebook:login:connected imagesSelected", function(ev) {
+        console.log(ev.imagesSelected[1]);
     });
 
     window.fbAsyncInit = function() {

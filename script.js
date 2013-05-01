@@ -1,36 +1,38 @@
-$(function() {
-    events = $({});
+(function(events) {
+    $(function() {
+        $.each(["imagesSelected",
+            "facebook:login:connected",
+            "facebook:login:not_authorized",
+            "facebook:login:not_logged_in"],
+            function(i, customEvent) {
+                events.on(customEvent, function() {
+                    extraParams = Array.prototype.slice.call(arguments, 1);
+                    console.log("event: " + customEvent + ", extraParams: " + extraParams);
+                    console.log(extraParams);
+                });
+            }
+        );
 
-    events.on("imagesSelected", function(ev, links) {
-        // console.log(links);
+        $("#dropbox-chooser").on("DbxChooserSuccess", function(ev) {
+            links = $.map(ev.originalEvent.files, function(a) { return a.link; });
+            events.trigger("imagesSelected", [links]);
+        });
+
     });
 
-    $("#dropbox-chooser").on("DbxChooserSuccess", function(ev) {
-        links = $.map(ev.originalEvent.files, function(a) { return a.link; });
-        events.trigger("imagesSelected", [links]);
-    });
+    window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '371594599611866',
+          channelUrl : 'http://dropbox-facebook.localhost/channel.html',
+          status     : true,
+          xfbml      : true
+        });
 
-});
-
-window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '371594599611866',
-      channelUrl : 'http://dropbox-facebook.localhost/channel.html',
-      status     : true,
-      xfbml      : true
-    });
-
-    FB.getLoginStatus(function(response) {
-        console.log("Facebook login status: " + response.status);
-        if (response.status === 'connected') {
-        // connected
-        } else if (response.status === 'not_authorized') {
-        // not_authorized
-        } else {
-        // not_logged_in
-        }
-    });
-};
+        FB.getLoginStatus(function(response) {
+            events.trigger("facebook:login:"+response.status, [response]);
+        });
+    };
+})($({}));
 
 (function(d, s, id){
     var js, fjs = d.getElementsByTagName(s)[0];

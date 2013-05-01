@@ -27,7 +27,7 @@
           xfbml      : true
         });
 
-        FB.getLoginStatus(function(response) {
+        FB.Event.subscribe('auth.authResponseChange', function(response) {
             events.trigger("facebook:login:"+response.status, [response]);
         });
     };

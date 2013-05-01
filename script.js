@@ -1,3 +1,20 @@
+$.fn.afterAll = function() {
+    var args = arguments;
+    var numCallbacks = arguments[0].match(/ /g).length+1;
+    return this.each(function() {
+        var numCallbacksTriggered = 0;
+        var localArgs = Array.prototype.slice.call(args, 0);
+        var callback = localArgs.splice(-1)[0];
+        localArgs.push(function() {
+            numCallbacksTriggered++;
+            if (numCallbacksTriggered == numCallbacks)
+                callback.apply(this, arguments);
+        });
+        $this = $(this);
+        $this.on.apply($this, localArgs);
+    });
+};
+
 (function(events) {
     $.each(["imagesSelected",
         "facebook:login:connected",

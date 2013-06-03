@@ -1,0 +1,18 @@
+body {
+}
+
+#steps > li {
+    list-style-type: none;
+}
+
+#steps > li:first-child {
+}
+
+#steps > li:last-child {
+}
+
+#facebook-step {
+}
+
+#dropbox-step {
+}

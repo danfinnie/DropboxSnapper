@@ -1,8 +1,18 @@
-body {
+html, body, #steps {
+    height: 100%;
+}
+
+#steps, #steps > li {
+    height: 50%;
 }
 
 #steps > li {
     list-style-type: none;
+    width: 35%;
+    margin: 5%;
+    float: left;
+    display: block;
+    border: 2px solid #ccc;
 }
 
 #steps > li:first-child {
@@ -12,7 +22,16 @@ body {
 }
 
 #facebook-step {
+    background-color: #8b9dc3;
 }
 
 #dropbox-step {
+    background: url(img/dropbox.png) no-repeat;
+    background-size: 40px 40px;
+}
+
+#dropbox-step .dropbox-chooser {
+    margin-left: auto;
+    margin-right: auto;
+
 }
